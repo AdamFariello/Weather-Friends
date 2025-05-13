@@ -1,5 +1,6 @@
 import requests
 import pprint
+import geocoder
 mainUrl = "https://geocoding-api.open-meteo.com/v1/"
 paramater = "search?"
 #search?name=Berlin&count=10&language=en&format=json"
@@ -11,6 +12,12 @@ paramater = "search?"
 # 4) language	 -- Default
 # 5) apikey	
 # 6) countryCode
+
+def getUserLocation():
+    g = geocoder.ip('me')
+    print(g.latlng)
+    print(g)
+
 
 def getPage(city):
     apiCall = mainUrl

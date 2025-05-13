@@ -3,5 +3,5 @@ Weather app that gets the weather in your location, and highlights places wtih t
 
 ## Install
 ```python
-pip install --user requests
+pip install --user requests geocoder pprint
 ```
