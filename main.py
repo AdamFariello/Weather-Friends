@@ -1,9 +1,9 @@
-import requests
-import pprint
-import geocoder
-mainUrl = "https://geocoding-api.open-meteo.com/v1/"
-paramater = "search?"
-#search?name=Berlin&count=10&language=en&format=json"
+import requests, geocoder
+from pprint import pprint
+
+# TODO: Figure if should include search? at the end
+searchUrl = "http://geocoding-api.open-meteo.com/v1/search?"
+forecastUrl = "http://api.open-meteo.com/v1/forecast?"
 
 # Args:
 # 1) name	
@@ -13,23 +13,40 @@ paramater = "search?"
 # 5) apikey	
 # 6) countryCode
 
+#print(vars(g))
+#print(dir(g))
+#pprint(g.__dict__)
+#print(g())
+
 def getUserLocation():
-    g = geocoder.ip('me')
-    print(g.latlng)
-    print(g)
+    return geocoder.ip('me').latlng
 
+def searchLocations():
+    apiCall = searchUrl 
 
-def getPage(city):
-    apiCall = mainUrl
-    def addCity(city):
-        return apiCall + paramater + "name=" + city + "&" 
+    # TODO: Figure if adding "&" at the end is needed
+    def getParamCity(city):
+        return "name=%s&" % str(city)
 
-    apiCall = addCity(city)
     res = requests.get(apiCall).json()
-    pprint.pprint(res)
+    pprint(res)
+
+def getForecast():
+    apiCall = forecastUrl 
+
+    # TODO: Figure if adding "&" at the end is needed
+    def getParamLatlng(latlng):
+        return "latitude=%f&longitude=%f" % (latlng[0], latlng[1])
+
+    apiCall += getParamLatlng(getUserLocation())
+    print(apiCall)
+
+    res = requests.get(apiCall).json()
+    pprint(res)
 
 
 def main():
-    getPage("Berlin")
+    #searchLocations()
+    getForecast()
 
 if __name__ == '__main__': main()
